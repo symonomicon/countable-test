@@ -35,11 +35,11 @@ const Time = sequelize.define('Time', {
   },
   start: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   end: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   }
 })
 
@@ -61,7 +61,7 @@ const Project = sequelize.define('Project', {
 User.hasMany(Time)
 
 // Project
-Project.hasMany(time)
+Project.hasMany(Time)
 
 // Time
 Time.belongsTo(User)
@@ -70,13 +70,13 @@ Time.belongsTo(Project)
 /** Init Data */
 
 const projectData = [
-  { name: 'Project 1' },
-  { name: 'Project 2' },
-  { name: 'Project 3' },
-  // Add more projects as needed
+  { name: 'Igni' },
+  { name: 'Aard' },
+  { name: 'Quen' },
+  { name: 'Yrden' },
+  { name: 'Axii' },
 ];
 
-// Create and save instances of the Project model
 Project.bulkCreate(projectData)
   .then(() => {
     console.log('Projects inserted successfully');
