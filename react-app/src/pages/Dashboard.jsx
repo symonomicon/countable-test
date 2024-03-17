@@ -7,6 +7,7 @@ import {
 } from '@mui/material'
 import TimeTracker from '../components/TimeTracker';
 import UserProfile from '../components/UserProfile';
+import Announcements from '../components/Announcements';
 
 
 export default function Dashboard() {
@@ -46,6 +47,17 @@ export default function Dashboard() {
               }}
             >
               <TimeTracker/>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <Paper
+              sx={{
+                p: 2,
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <Announcements/>
             </Paper>
           </Grid>
       </Grid>

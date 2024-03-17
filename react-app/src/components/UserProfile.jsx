@@ -1,7 +1,7 @@
-const TimeTracker = () => {
+const UserProfile = () => {
     return (
         <>UserProfile</>
     )
 }
 
-export default TimeTracker
+export default UserProfile
