@@ -14,8 +14,8 @@ router.route("/user/login")
     .post(userController.login)
 
 router.route("/time")
-    .post(timeController.createTime)
-    .put(timeController.updateTime)
+    .post(timeController.upsertTime)
+    .put(timeController.upsertTime)
     .get(timeController.getTime)
 
 router.route("/project")

@@ -26,7 +26,7 @@ export default function Login() {
       email: data.get('email'),
       password: data.get('password')
     }).then(({data}) => {
-      localStorage.setItem('token', data.user)
+      localStorage.setItem('token', JSON.stringify(data.user))
       navigate('/dashboard')
     })
 

@@ -33,13 +33,14 @@ const Time = sequelize.define('Time', {
     autoIncrement: true,
     primaryKey: true
   },
-  start: {
-    type: DataTypes.STRING,
-    allowNull: true,
+  date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
   },
-  end: {
-    type: DataTypes.STRING,
+  time: {
+    type: DataTypes.BIGINT,
     allowNull: true,
+    defaultValue: 0
   }
 })
 

@@ -1,45 +1,103 @@
 import {useState, useEffect, useMemo} from 'react'
 import { Box, Button, FormControl, MenuItem, Select, Typography } from "@mui/material"
+import axios from 'axios'
 import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+dayjs.extend(duration)
 
-const formatTime = (time) => {
-    if (parseInt(time) < 10) {
-        return `0${time}`
-    }
-    return time
+const formatTime = (timeInMs) => {
+    const timeInSeconds = timeInMs * 1000
+    const hours = dayjs.duration(timeInSeconds).hours()
+    const minutes = dayjs.duration(timeInSeconds).minutes()
+    const seconds = dayjs.duration(timeInSeconds).seconds()
+
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 }
 
 const TimeTracker = ({projects}) => {
-    const [time, setTime] = useState(dayjs())
-    const [startTime, setStartTime] = useState(null)
+    const user = JSON.parse(localStorage.getItem('token') || "")
+    const [clock, setClock] = useState(dayjs())
+    const [startTime, setStartTime] = useState({
+        baseTime: null,
+        timer: null,
+        running: false
+    })
+    const [elapsedTime, setElapsedTime] = useState(0)
     const [project, setProject] = useState(projects?.[0] || {})
 
+    const date = useMemo(() => clock.format('YYYY-MM-DD'), [clock])
+
     useEffect(() => {
-        const updateTime = setInterval(() => setTime(dayjs()), 1000)
+        axios.get('http://localhost:3000/time', {
+                params: {
+                    userId: user.id,
+                    projectId: project.id,
+                    date
+                }
+            })
+            .then(({data}) => {
+                const [record] = data
+                setStartTime({
+                    baseTime: +dayjs(record.date),
+                    timer: record.time,
+                    running: false
+                })
+                setElapsedTime(record.time)
+            })
+
+        const updateTime = setInterval(() => setClock(dayjs()), 1000)
         return () => clearInterval(updateTime)
     }, [])
 
-    const toggleTime = () => {
-        if (!startTime) {
-            // Start
-            console.log("START")
-            setStartTime(dayjs())
+    const toggleTime = async () => {
+        if (!startTime.running) {
+            const baseTimestamp = +dayjs() // unix timestamp
+            setStartTime({
+                baseTime: baseTimestamp,
+                timer: setInterval(() => setElapsedTime((prev) => prev + 1), 1000),
+                running: true
+            })
+            const existingTime = await axios.get('http://localhost:3000/time', {
+                params: {
+                    userId: user.id,
+                    projectId: project.id,
+                    date
+                }
+            })
+            const entry = existingTime?.data[0]
+            if (entry) {
+                await axios.put('http://localhost:3000/time',{
+                    userId: user.id,
+                    projectId: project.id,
+                    date,
+                    time: elapsedTime !== entry.time ? elapsedTime+entry.time : elapsedTime
+                })
+            } else {
+                await axios.post('http://localhost:3000/time',{
+                    userId: user.id,
+                    projectId: project.id,
+                    date
+                })
+            }
+            
         } else {
-            // Stop
-            console.log("STOP")
-            setStartTime(null)
+            setStartTime({
+                ...startTime,
+                running: false
+            })
+            await axios.post('http://localhost:3000/time',{
+                userId: user.id,
+                projectId: project.id,
+                date,
+                time: elapsedTime
+            })
+            clearInterval(startTime.timer)
         }
     }
 
     const currentTime = useMemo(() => {
-        if (startTime) {
-            const hr = formatTime(Math.abs(startTime.diff(time, 'h') % 24))
-            const mm = formatTime(Math.abs(startTime.diff(time, 'm') % 60))
-            const ss = formatTime(Math.abs(startTime.diff(time, 's') % 60))
-            return `${hr}:${mm}:${ss}`
-        }
-        return "00:00:00"
-    }, [startTime, time])
+        return formatTime(elapsedTime)
+    }, [elapsedTime])
 
     const handleProjectChange = (e) => {
         setProject(e.target.value)
@@ -52,12 +110,12 @@ const TimeTracker = ({projects}) => {
                     Current Project:
                 </Typography>
                 <Select
-                    value={project}
+                    value={project.name}
                     onChange={handleProjectChange}
                 >
                     {
                         projects.map((project) => (
-                            <MenuItem key={project.id} value={project}>{project.name}</MenuItem>
+                            <MenuItem key={project.id} value={project.name}>{project.name}</MenuItem>
                         ))
                     }
                 </Select>
@@ -66,10 +124,10 @@ const TimeTracker = ({projects}) => {
                 {currentTime}
             </Typography>
             <Button variant="contained" onClick={toggleTime}>
-                { !startTime ? 'Start time' : 'Stop time'}
+                { !startTime.running ? 'Start time' : 'Stop time'}
             </Button>
             <Typography>
-                {time.format("MMM DD, YYYY | HH:MM:ss")}
+                {clock.format("MMM DD, YYYY | HH:MM:ss")}
             </Typography>
         </Box>
     )

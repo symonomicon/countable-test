@@ -30,7 +30,7 @@ export default function SignUp() {
       password: data.get('password')
     }).then(({data}) => {
       navigate('/dashboard')
-      localStorage.setItem("token", data.user)
+      localStorage.setItem("token", JSON.stringify(data.user))
     })
   };
 
