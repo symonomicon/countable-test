@@ -1,4 +1,12 @@
 import Box from '@mui/material/Box';
+import {
+  Container,
+  Toolbar,
+  Grid,
+  Paper
+} from '@mui/material'
+import TimeTracker from '../components/TimeTracker';
+import UserProfile from '../components/UserProfile';
 
 
 export default function Dashboard() {
@@ -15,6 +23,33 @@ export default function Dashboard() {
       overflow: 'auto',
     }}
   >
+    <Toolbar />
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <Paper
+              sx={{
+                p: 2,
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <UserProfile/>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Paper
+              sx={{
+                p: 2,
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <TimeTracker/>
+            </Paper>
+          </Grid>
+      </Grid>
+    </Container>
   </Box>
   );
 }
