@@ -4,6 +4,7 @@ import {
   } from "react-router-dom"
 import Login from '../pages/Login'
 import Dashboard from '../pages/Dashboard'
+import Timesheet from '../pages/Timesheet'
 import SignUp from "../pages/Signup"
 import BaseLayout from '../layouts'
 import { ErrorBoundary } from "react-error-boundary";
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <Dashboard/>
+      },
+      {
+        path: "/timesheet",
+        element: <Timesheet/>
       },
     ]
   },
