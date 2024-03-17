@@ -1,5 +1,5 @@
 //controllers.js
-const { User } = require('./db');
+const { User } = require('../db');
 
 // for creating a new product
 // Controller for creating a new product

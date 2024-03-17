@@ -68,22 +68,23 @@ Time.belongsTo(User)
 Time.belongsTo(Project)
 
 /** Init Data */
+Project.sync().then(() => {
+  const projectData = [
+    { name: 'Igni' },
+    { name: 'Aard' },
+    { name: 'Quen' },
+    { name: 'Yrden' },
+    { name: 'Axii' },
+  ];
 
-const projectData = [
-  { name: 'Igni' },
-  { name: 'Aard' },
-  { name: 'Quen' },
-  { name: 'Yrden' },
-  { name: 'Axii' },
-];
-
-Project.bulkCreate(projectData)
-  .then(() => {
-    console.log('Projects inserted successfully');
-  })
-  .catch(err => {
-    console.error('Error inserting projects:', err);
-  });
+  Project.bulkCreate(projectData)
+    .then(() => {
+      console.log('Projects inserted successfully');
+    })
+    .catch(err => {
+      console.error('Error inserting projects:', err);
+    });
+})
 
 module.exports = {
   sequelize,

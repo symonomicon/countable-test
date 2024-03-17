@@ -1,5 +1,5 @@
 //controllers.js
-const { Time } = require('./db');
+const { Time } = require('../db');
 
 // for creating a new product
 // Controller for creating a new product
