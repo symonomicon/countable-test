@@ -1,24 +1,32 @@
+import {useState, useEffect} from 'react'
 import Box from '@mui/material/Box';
 import {
   Container,
   Toolbar,
   Grid,
-  Paper
+  Paper,
+  CircularProgress
 } from '@mui/material'
+import axios from 'axios'
 import TimeTracker from '../components/TimeTracker';
 import UserProfile from '../components/UserProfile';
 import Announcements from '../components/Announcements';
 
 
-const PROJECTS = [
-    'Quen',
-    'Aard',
-    'Igni',
-    'Axii',
-    'Yrden'
-]
-
 export default function Dashboard() {
+  const [loading, setLoading] = useState(true)
+  const [projects, setProjects] = useState(null)
+
+  useEffect(() => {
+    // if (projects.length === 0) {
+      axios.get('http://localhost:3000/project')
+        .then(({data}) => {
+          setProjects(data)
+        })
+        .finally(() => setLoading(false))
+    // }
+  }, [])
+
   return (
     <Box
     component="main"
@@ -54,7 +62,11 @@ export default function Dashboard() {
                 flexDirection: 'column',
               }}
             >
-              <TimeTracker projects={PROJECTS}/>
+              {
+                loading ? (
+                  <CircularProgress/>
+                ) : <TimeTracker projects={projects}/>
+              }
             </Paper>
           </Grid>
           <Grid item xs={12} md={12}>

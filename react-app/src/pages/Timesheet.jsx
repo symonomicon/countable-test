@@ -5,10 +5,6 @@ import {
   Grid,
   Paper
 } from '@mui/material'
-import TimeTracker from '../components/TimeTracker';
-import UserProfile from '../components/UserProfile';
-import Announcements from '../components/Announcements';
-
 
 const PROJECTS = [
     'Quen',
