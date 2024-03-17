@@ -6,10 +6,17 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import routes from './routes'
+import { createTheme } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
+const defaultTheme = createTheme();
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={routes} />
+    <CssBaseline />
+    <ThemeProvider theme={defaultTheme}>
+      <RouterProvider router={routes} />
+    </ThemeProvider>
   </React.StrictMode>
 );
 

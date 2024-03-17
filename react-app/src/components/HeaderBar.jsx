@@ -1,10 +1,11 @@
-import { useState } from 'react'
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import MuiAppBar from '@mui/material/AppBar';
 import { Toolbar } from '@mui/material';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useNavigate } from 'react-router-dom';
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -24,6 +25,11 @@ const AppBar = styled(MuiAppBar, {
     }),
   }));
 function HeaderBar({sidebarOpen, toggleSidebar}) {
+    const navigate = useNavigate()
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        navigate('/login')
+    }
     return (
         <AppBar position="absolute" open={sidebarOpen}>
           <Toolbar
@@ -52,6 +58,9 @@ function HeaderBar({sidebarOpen, toggleSidebar}) {
             >
               Dashboard
             </Typography>
+            <IconButton color="inherit">
+                <LogoutIcon onClick={handleLogout}/>
+            </IconButton>
           </Toolbar>
         </AppBar>
     )
