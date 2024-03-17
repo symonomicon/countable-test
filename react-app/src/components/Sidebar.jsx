@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { styled } from '@mui/material/styles';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Divider from '@mui/material/Divider';
@@ -6,6 +5,9 @@ import List from '@mui/material/List';
 import MuiDrawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
+import sidebarRoutes from '../routes/sidebarRoutes'
+import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -32,7 +34,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
       },
     }),
   );
-  
+
 function Sidebar({sidebarOpen, toggleSidebar}) {
     return (
         <Drawer variant="permanent" open={sidebarOpen}>
@@ -50,11 +52,17 @@ function Sidebar({sidebarOpen, toggleSidebar}) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {/* {mainListItems} */}
-            mainListItems
+            {
+                sidebarRoutes.map(({icon: Icon, text, path}) => (
+                    <ListItemButton component={Link} to={path} key={text}>
+                        <ListItemIcon>
+                            <Icon/>
+                        </ListItemIcon>
+                        <ListItemText primary={text} />
+                    </ListItemButton>
+                ))
+            }
             <Divider sx={{ my: 1 }} />
-            {/* {secondaryListItems} */}
-            secondaryListItems
           </List>
         </Drawer>
     )

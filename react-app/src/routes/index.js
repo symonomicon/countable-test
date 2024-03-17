@@ -1,6 +1,6 @@
-import baseRoute from './baseRoute'
+import baseRoutes from './baseRoutes'
 
 const routes = {
-    ...baseRoute
+    ...baseRoutes
 }
 export default routes

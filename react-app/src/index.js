@@ -9,14 +9,17 @@ import routes from './routes'
 import { createTheme } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { ErrorBoundary } from "react-error-boundary";
 
 const defaultTheme = createTheme();
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <CssBaseline />
-    <ThemeProvider theme={defaultTheme}>
-      <RouterProvider router={routes} />
-    </ThemeProvider>
+    <ErrorBoundary>
+      <CssBaseline />
+      <ThemeProvider theme={defaultTheme}>
+          <RouterProvider router={routes} />
+      </ThemeProvider>
+    </ErrorBoundary>
   </React.StrictMode>
 );
 
