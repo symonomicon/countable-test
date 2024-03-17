@@ -37,12 +37,14 @@ const TimeTracker = ({projects}) => {
             })
             .then(({data}) => {
                 const [record] = data
-                setStartTime({
-                    baseTime: +dayjs(record.date),
-                    timer: record.time,
-                    running: false
-                })
-                setElapsedTime(record.time)
+                if (record) {
+                    setStartTime({
+                        baseTime: +dayjs(record.date),
+                        timer: record.time,
+                        running: false
+                    })
+                    setElapsedTime(record.time)
+                }
             })
 
         const updateTime = setInterval(() => setClock(dayjs()), 1000)
