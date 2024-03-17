@@ -10,6 +10,14 @@ import UserProfile from '../components/UserProfile';
 import Announcements from '../components/Announcements';
 
 
+const PROJECTS = [
+    'Quen',
+    'Aard',
+    'Igni',
+    'Axii',
+    'Yrden'
+]
+
 export default function Dashboard() {
   return (
     <Box
@@ -46,7 +54,7 @@ export default function Dashboard() {
                 flexDirection: 'column',
               }}
             >
-              <TimeTracker/>
+              <TimeTracker projects={PROJECTS}/>
             </Paper>
           </Grid>
           <Grid item xs={12} md={12}>

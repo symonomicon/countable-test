@@ -1,5 +1,5 @@
 import {useState, useEffect, useMemo} from 'react'
-import { Box, Button, Typography } from "@mui/material"
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material"
 import dayjs from 'dayjs'
 
 const formatTime = (time) => {
@@ -9,9 +9,11 @@ const formatTime = (time) => {
     return time
 }
 
-const TimeTracker = () => {
+const TimeTracker = ({projects}) => {
     const [time, setTime] = useState(dayjs())
     const [startTime, setStartTime] = useState(null)
+    const [project, setProject] = useState(projects[0])
+
     useEffect(() => {
         const updateTime = setInterval(() => setTime(dayjs()), 1000)
         return () => clearInterval(updateTime)
@@ -39,8 +41,27 @@ const TimeTracker = () => {
         return "00:00:00"
     }, [startTime, time])
 
+    const handleProjectChange = (e) => {
+        setProject(e.target.value)
+    }
+
     return (
         <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={1}>
+            <FormControl sx={{ minWidth: 120, flexDirection: 'row', alignItems: 'center', gap: 2 }} size="small">
+                <Typography>
+                    Current Project:
+                </Typography>
+                <Select
+                    value={project}
+                    onChange={handleProjectChange}
+                >
+                    {
+                        projects.map((projectName) => (
+                            <MenuItem key={projectName} value={projectName}>{projectName}</MenuItem>
+                        ))
+                    }
+                </Select>
+            </FormControl>
             <Typography variant="h2">
                 {currentTime}
             </Typography>
