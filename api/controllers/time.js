@@ -7,7 +7,7 @@ const createTime = async (req, res) => {
     try {
         const { start } = req.body;
         const time = await Time.create({ start });
-        res.json({ message: 'Time start record successful', time });
+        res.status(200).json({ message: 'Time start record successful', time });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -25,28 +25,29 @@ const updateTime = async (req, res) => {
             time.end = end
         }
         await time.save()
-        res.json({ message: 'Time start record successful', time });
+        res.status(200).json({ message: 'Time start record successful', time });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 };
 
-// const getTime = async (req, res) => {
-//     try {
-//         const email = req.params.email;
-//         const user = await User.findOne({ where: { email: email } })
-//         if (!user) {
-//             res.status(404).send('User not found')
-//         }
-//         res.json(user)
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// };
+const getTime = async (req, res) => {
+    try {
+        // const email = req.params.email;
+        const time = await Time.findAll()
+        if (!time) {
+            res.status(404).send('User not found')
+        }
+        res.status(200).json(time)
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
 
 module.exports = {
     createTime,
-    updateTime
+    updateTime,
+    getTime
 }

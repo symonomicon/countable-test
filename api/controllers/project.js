@@ -11,7 +11,7 @@ const getProject = async (req, res) => {
         if (!projects) {
             res.status(404).send('User not found')
         }
-        res.json(projects)
+        res.status(200).json(projects)
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');

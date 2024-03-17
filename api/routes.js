@@ -15,6 +15,7 @@ router.route("/user/:email")
 router.route("/time")
     .post(timeController.createTime)
     .put(timeController.updateTime)
+    .get(timeController.getTime)
 
 router.route("/project")
     .get(projectController.getProject)

@@ -3,11 +3,9 @@ const app = express()
 const port = 3000
 const { sequelize } = require('./db');
 const routes = require('./routes')
+const cors = require('cors')
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
-
+app.use(cors())
 app.use(routes)
 
 app.listen(port, () => {
