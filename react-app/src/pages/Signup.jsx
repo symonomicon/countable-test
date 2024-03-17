@@ -10,9 +10,12 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 export default function SignUp() {
+  const navigate = useNavigate()
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -20,6 +23,15 @@ export default function SignUp() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    axios.post('http://localhost:3000/user', {
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
+      email: data.get('email'),
+      password: data.get('password')
+    }).then(({data}) => {
+      navigate('/dashboard')
+      localStorage.setItem("token", data.user)
+    })
   };
 
   return (
@@ -80,12 +92,6 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="new-password"
-            />
-            </Grid>
-            <Grid item xs={12}>
-            <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
             />
             </Grid>
         </Grid>

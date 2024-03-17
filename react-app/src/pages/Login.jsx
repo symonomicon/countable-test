@@ -11,8 +11,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-export default function SignIn() {
+export default function Login() {
   const navigate = useNavigate()
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -21,8 +22,14 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     });
-    localStorage.setItem('token', 'some-token')
-    navigate('/')
+    axios.post('http://localhost:3000/user/login', {
+      email: data.get('email'),
+      password: data.get('password')
+    }).then(({data}) => {
+      localStorage.setItem('token', data.user)
+      navigate('/dashboard')
+    })
+
   };
 
   useEffect(() => {

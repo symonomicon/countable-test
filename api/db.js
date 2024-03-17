@@ -20,7 +20,7 @@ const User = sequelize.define('User', {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  name: {
+  password: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -68,7 +68,7 @@ Time.belongsTo(User)
 Time.belongsTo(Project)
 
 /** Init Data */
-Project.sync().then(() => {
+sequelize.sync().then(() => {
   const projectData = [
     { name: 'Igni' },
     { name: 'Aard' },

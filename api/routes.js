@@ -8,9 +8,10 @@ const projectController = require('./controllers/project')
 const router = express.Router();
 
 router.route("/user")
-    .post(userController.createUser);
-router.route("/user/:email")
+    .post(userController.createUser)
     .get(userController.getUser)
+router.route("/user/login")
+    .post(userController.login)
 
 router.route("/time")
     .post(timeController.createTime)
